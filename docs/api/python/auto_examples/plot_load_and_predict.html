@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Load and predict with ONNX Runtime and a very simple model &#8212; ONNX Runtime 1.11.0 documentation</title>
+    <title>Load and predict with ONNX Runtime and a very simple model &#8212; ONNX Runtime 1.13.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../static/graphviz.css" />
@@ -17,6 +17,7 @@
     <script data-url_root="../" id="documentation_options" src="../static/documentation_options.js"></script>
     <script src="../static/jquery.js"></script>
     <script src="../static/underscore.js"></script>
+    <script src="../static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,12 +45,13 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="load-and-predict-with-onnx-runtime-and-a-very-simple-model">
-<span id="l-example-simple-usage"></span><span id="sphx-glr-auto-examples-plot-load-and-predict-py"></span><h1>Load and predict with ONNX Runtime and a very simple model<a class="headerlink" href="#load-and-predict-with-onnx-runtime-and-a-very-simple-model" title="Permalink to this headline">¶</a></h1>
+<span id="l-example-simple-usage"></span><span id="sphx-glr-auto-examples-plot-load-and-predict-py"></span><h1>Load and predict with ONNX Runtime and a very simple model<a class="headerlink" href="#load-and-predict-with-onnx-runtime-and-a-very-simple-model" title="Permalink to this heading">¶</a></h1>
 <p>This example demonstrates how to load a model and compute
 the output for an input vector. It also shows how to
 retrieve the definition of its inputs and outputs.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="k">as</span> <span class="nn">rt</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="k">as</span> <span class="nn">rt</span>
 <span class="kn">from</span> <span class="nn">onnxruntime.datasets</span> <span class="k">import</span> <span class="n">get_example</span>
 </pre></div>
 </div>
@@ -68,7 +70,6 @@ The model is available on github <a class="reference external" href="https://git
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input type&quot;</span><span class="p">,</span> <span class="n">input_type</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>input name x
 input shape [3, 4, 5]
 input type tensor(float)
@@ -83,7 +84,6 @@ input type tensor(float)
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;output type&quot;</span><span class="p">,</span> <span class="n">output_type</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>output name y
 output shape [3, 4, 5]
 output type tensor(float)
@@ -91,32 +91,32 @@ output type tensor(float)
 </div>
 <p>Let’s compute its outputs (or predictions if it is a machine learned model).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy.random</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">output_name</span><span class="p">],</span> <span class="p">{</span><span class="n">input_name</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[array([[[0.7282232 , 0.55751914, 0.6318114 , 0.5736186 , 0.5210682 ],
-        [0.5551789 , 0.50124794, 0.5218111 , 0.58663917, 0.7030232 ],
-        [0.54759526, 0.60854995, 0.5004847 , 0.6313993 , 0.7113242 ],
-        [0.5441941 , 0.5421912 , 0.5857317 , 0.6881397 , 0.63593704]],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[array([[[0.54123443, 0.5934754 , 0.6686989 , 0.69254357, 0.57058996],
+        [0.5311815 , 0.5354573 , 0.5343065 , 0.67483085, 0.5777385 ],
+        [0.62410975, 0.65330565, 0.6329309 , 0.5099917 , 0.6724523 ],
+        [0.53235966, 0.59071815, 0.560767  , 0.6743555 , 0.7300554 ]],
 
-       [[0.65265447, 0.52420175, 0.6876056 , 0.6252413 , 0.5143449 ],
-        [0.5869513 , 0.58136684, 0.60523754, 0.59603804, 0.70649385],
-        [0.65459174, 0.58812606, 0.59879124, 0.5215285 , 0.5047252 ],
-        [0.5102888 , 0.5441282 , 0.674335  , 0.6463818 , 0.7018383 ]],
+       [[0.7219914 , 0.67883784, 0.7059892 , 0.63226193, 0.7145371 ],
+        [0.60675806, 0.73044604, 0.6722283 , 0.6050807 , 0.58030283],
+        [0.58123356, 0.50687426, 0.7275337 , 0.668061  , 0.5506673 ],
+        [0.54432106, 0.6719252 , 0.68477345, 0.64335024, 0.5959146 ]],
 
-       [[0.592211  , 0.7291903 , 0.62842566, 0.50748336, 0.6976217 ],
-        [0.615195  , 0.609173  , 0.66978675, 0.573927  , 0.7099608 ],
-        [0.6536062 , 0.5290325 , 0.5949771 , 0.52116865, 0.5360124 ],
-        [0.6968157 , 0.67949474, 0.6668297 , 0.68328327, 0.6817404 ]]],
+       [[0.6733567 , 0.5034217 , 0.63610995, 0.50755197, 0.69176346],
+        [0.59833276, 0.53930086, 0.70608723, 0.5469647 , 0.5530964 ],
+        [0.5762999 , 0.56289613, 0.6408626 , 0.6878227 , 0.6663563 ],
+        [0.5295189 , 0.5513989 , 0.60566294, 0.7118951 , 0.55471694]]],
       dtype=float32)]
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.009 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-load-and-predict-py">
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-load-and-predict-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../downloads/7c8424f45d0156abd4d0221c65601124/plot_load_and_predict.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_load_and_predict.py</span></code></a></p>
 </div>
@@ -173,7 +173,7 @@ output type tensor(float)
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -190,7 +190,7 @@ output type tensor(float)
       &copy;2018-2021, Microsoft.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
